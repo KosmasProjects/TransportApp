@@ -22,7 +22,6 @@ class _TransportPageState extends State<TransportPage> {
         body: BlocBuilder<TransportBloc, TransportState>(
           builder: (context, state) {
             print('State is updating');
-            print(state.transfers);
             print(state);
             if (state is TransportListInitial && state.transfers.isNotEmpty) {
               final transfers = state.transfers;
@@ -35,10 +34,6 @@ class _TransportPageState extends State<TransportPage> {
                   return buildTransferTile(context, transfer);
                 },
               );
-            } else if (state is TransportListUpdated &&
-                state.transfers.isNotEmpty) {
-              final transfers = state.transfers;
-              return Container();
             }
             return Center(
               child: SizedBox(
@@ -124,7 +119,9 @@ class _TransportPageState extends State<TransportPage> {
                   child: IconButton.outlined(
                       color: Colors.red,
                       onPressed: () {
-                        transportBloc.add(DeleteTransfer(transfer: transfer));
+                        context
+                            .read<TransportBloc>()
+                            .add(DeleteTransfer(transfer));
 
                         print('Pressed');
                         // setState(() {});
