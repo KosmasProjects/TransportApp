@@ -28,7 +28,7 @@ class TransportBloc extends Bloc<TransportEvent, TransportState> {
     // state.transfers.add(event.transfer);
     final state = this.state as TransportListInitial;
     // emit(TransportListInitial(transfers: state.transfers));
-    final data = List.of(state.transfers)..remove(event.transfer);
+    final data = List.of(state.transfers)..add(event.transfer);
     emit(TransportListInitial(transfers: data));
   }
 

@@ -152,8 +152,9 @@ class _TransportPageState extends State<TransportPage> {
     TextEditingController arivalDestination = TextEditingController();
     TextEditingController dateInputHeadOut = TextEditingController();
     TextEditingController dateInputArrival = TextEditingController();
-    DateTime headOutDate;
-    DateTime arivalDate;
+    TextEditingController dateInputID = TextEditingController();
+    DateTime? headOutDate;
+    DateTime? arivalDate;
     int indexOfType = 1;
 
     return Dialog.fullscreen(
@@ -358,6 +359,44 @@ class _TransportPageState extends State<TransportPage> {
                           )),
                     )),
               ],
+            ),
+            SizedBox(height: 20),
+            PopUpTopic(label: 'Write transfer ID'), SizedBox(height: 10),
+            Container(
+              width: 50,
+              decoration: BoxDecoration(
+                  color: Colors.white, borderRadius: BorderRadius.circular(8)),
+              child: TextFormField(
+                controller: dateInputID,
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'id',
+                  focusedBorder: null,
+                ),
+                keyboardType: TextInputType.number,
+              ),
+            ),
+            Spacer(),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.green, borderRadius: BorderRadius.circular(8)),
+              child: TextButton.icon(
+                  style: TextButton.styleFrom(foregroundColor: Colors.white),
+                  onPressed: () {
+                    print(dateInputID);
+                    final newtransfer = Transfer(
+                        id: int.parse(dateInputID.text),
+                        headOutDate: headOutDate as DateTime,
+                        arivalDate: arivalDate as DateTime,
+                        transportType: TransportType.land,
+                        headOutDestination: headOutDestination.text,
+                        arivalDestination: arivalDestination.text);
+                    context.read<TransportBloc>().add(AddTransfer(newtransfer));
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(Icons.check_circle),
+                  label: Text('Save')),
             )
             // DatePickerDialog(
             //     initialDate: DateTime(2023),
