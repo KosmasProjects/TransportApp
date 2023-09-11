@@ -57,6 +57,16 @@ class _TransportPageState extends State<TransportPage> {
 
   @override
   Widget buildTransferTile(BuildContext context, transfer) {
+    Map mapOfIcons = {
+      TransportType.land: Icon(Icons.directions_bus),
+      TransportType.water: Icon(Icons.directions_boat),
+      TransportType.air: Icon(Icons.airplanemode_active),
+    };
+    Map mapOfColors = {
+      TransportType.land: Colors.orange,
+      TransportType.water: Colors.blue,
+      TransportType.air: Colors.white,
+    };
     String _formatDateTime(DateTime dateTime) {
       return DateFormat.yMMMMd('en_US').format(dateTime);
     }
@@ -72,7 +82,7 @@ class _TransportPageState extends State<TransportPage> {
                 Container(
                   width: 20,
                   height: 100,
-                  color: Colors.orange,
+                  color: mapOfColors[transfer.transportType],
                   child: Center(child: Text(transfer.id.toString())),
                 ),
                 SizedBox(width: 10),
@@ -114,14 +124,15 @@ class _TransportPageState extends State<TransportPage> {
                 ),
                 SizedBox(width: 10),
                 Container(
-                    color: Colors.orange,
+                    color: mapOfColors[transfer.transportType],
                     width: 30,
                     height: 100,
-                    child: Center(
-                        child: Icon(
-                      Icons.delivery_dining_outlined,
-                      color: Colors.black,
-                    ))),
+                    child: Center(child: mapOfIcons[transfer.transportType]
+                        //     Icon(
+                        //   Icons.directions_bus,
+                        //   color: Colors.black,
+                        // )
+                        )),
                 SizedBox(width: 10),
                 Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -156,6 +167,11 @@ class _TransportPageState extends State<TransportPage> {
     DateTime? headOutDate;
     DateTime? arivalDate;
     int indexOfType = 1;
+    Map mapOfTransportTye = {
+      1: TransportType.land,
+      2: TransportType.water,
+      3: TransportType.air
+    };
 
     return Dialog.fullscreen(
       backgroundColor: Colors.grey.shade200,
@@ -389,7 +405,7 @@ class _TransportPageState extends State<TransportPage> {
                         id: int.parse(dateInputID.text),
                         headOutDate: headOutDate as DateTime,
                         arivalDate: arivalDate as DateTime,
-                        transportType: TransportType.land,
+                        transportType: mapOfTransportTye[indexOfType],
                         headOutDestination: headOutDestination.text,
                         arivalDestination: arivalDestination.text);
                     context.read<TransportBloc>().add(AddTransfer(newtransfer));
